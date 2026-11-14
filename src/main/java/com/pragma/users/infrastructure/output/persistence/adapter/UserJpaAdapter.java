@@ -38,6 +38,13 @@ public class UserJpaAdapter implements UserRepositoryPort {
                 .map(this::toDomainWithRole);
     }
 
+    @Override
+    public Optional<User> findById(Long id) {
+
+        return userJpaRepository.findById(id)
+                .map(this::toDomainWithRole);
+    }
+
 
     private User toDomainWithRole(UserEntity entity) {
 

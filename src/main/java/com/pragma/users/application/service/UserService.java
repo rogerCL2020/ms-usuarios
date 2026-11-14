@@ -9,11 +9,12 @@ import com.pragma.users.application.port.out.UserRepositoryPort;
 import com.pragma.users.application.validation.UserValidationStrategy;
 import com.pragma.users.domain.exception.InvalidRoleException;
 import com.pragma.users.domain.exception.InvalidUserException;
+import com.pragma.users.domain.exception.UserNotFoundException;
 import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,6 +50,15 @@ public class UserService implements CreateUserUseCase, GetUserUseCase {
     public boolean existsByEmail(String email) {
         return userRepositoryPort.findByEmail(email).isPresent();
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserById(Long id) {
+        return userRepositoryPort.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
 
     private Role findRoleById(Long roleId) {
 

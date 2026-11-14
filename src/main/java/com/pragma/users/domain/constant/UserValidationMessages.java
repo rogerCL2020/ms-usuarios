@@ -12,5 +12,8 @@ public final class UserValidationMessages {
     public static final String UNDERAGE_USER = "Underage user";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String EMAIL_ALREADY_EXISTS  = "Email already exists";
+    public static final String CREDENTIALS_INVALID = "Invalid credentials";
+    public static final String EMAIL_NOT_EXISTS  = "Email does not exist";
+
 
 }

@@ -1,6 +1,7 @@
 
 package com.pragma.users.infrastructure.input.rest.advice;
 
+import com.pragma.users.application.exception.UserAuthenticationException;
 import com.pragma.users.domain.exception.*;
 import com.pragma.users.domain.model.Role;
 import org.springframework.dao.DataAccessException;
@@ -11,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +44,10 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-
+    @ExceptionHandler(UserAuthenticationException.class)
+    public ResponseEntity<Map<String, String>> handleUserAuthenticationException(UserAuthenticationException exception) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, exception.getMessage());
+    }
 
 
     @ExceptionHandler(AccessDeniedException.class)

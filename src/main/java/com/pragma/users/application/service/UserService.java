@@ -2,6 +2,7 @@
 package com.pragma.users.application.service;
 
 import com.pragma.users.application.port.in.CreateUserUseCase;
+import com.pragma.users.application.port.in.DeleteUserUseCase;
 import com.pragma.users.application.port.in.GetUserUseCase;
 import com.pragma.users.application.port.out.PasswordEncoderPort;
 import com.pragma.users.application.port.out.RoleRepositoryPort;
@@ -21,11 +22,13 @@ import java.util.List;
 import static com.pragma.users.domain.constant.RoleValidationMessages.ROLE_ID_REQUIRED;
 import static com.pragma.users.domain.constant.RoleValidationMessages.ROLE_NOT_FOUND;
 import static com.pragma.users.domain.constant.UserValidationMessages.EMAIL_ALREADY_EXISTS;
+import static com.pragma.users.domain.constant.UserValidationMessages.USER_NOT_EMPLOYEE;
+import static com.pragma.users.domain.model.enums.RoleEnum.EMPLOYEE_ROLE;
 import static com.pragma.users.domain.model.enums.RoleEnum.OWNER_ROLE;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements CreateUserUseCase, GetUserUseCase {
+public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUserUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
@@ -47,6 +50,14 @@ public class UserService implements CreateUserUseCase, GetUserUseCase {
     }
 
     @Override
+    @Transactional
+    public User createEmployee(User user) {
+        Role role = findRoleByName(EMPLOYEE_ROLE.getRoleName());
+        return registerUser(user, role);
+    }
+
+
+    @Override
     public boolean existsByEmail(String email) {
         return userRepositoryPort.findByEmail(email).isPresent();
     }
@@ -57,6 +68,18 @@ public class UserService implements CreateUserUseCase, GetUserUseCase {
     public User getUserById(Long id) {
         return userRepositoryPort.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEmployee(Long employeeId) {
+        User user = getUserById(employeeId);
+
+        if (!EMPLOYEE_ROLE.getRoleName().equalsIgnoreCase(user.getRoleName())) {
+            throw new InvalidUserException(USER_NOT_EMPLOYEE);
+        }
+
+        userRepositoryPort.deleteById(employeeId);
     }
 
 

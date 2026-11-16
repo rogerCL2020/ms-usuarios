@@ -1,5 +1,5 @@
 
-package com.pragma.users.infrastructure.output.security.adapter;
+package com.pragma.users.infrastructure.output.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

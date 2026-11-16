@@ -1,5 +1,5 @@
 
-package com.pragma.users.infrastructure.output.security.adapter;
+package com.pragma.users.infrastructure.output.security;
 
 import com.pragma.users.application.port.out.TokenServicePort;
 import io.jsonwebtoken.Claims;

@@ -51,6 +51,19 @@ public class UserController {
                 .body(toResponse(createdUser));
     }
 
+    @PostMapping("/client")
+    public ResponseEntity<UserResponse> createClient(
+            @Valid @RequestBody CreateUserRequest request) {
+
+        User user = toUser(request);
+
+        User createdUser = createUserUseCase.createClient(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(toResponse(createdUser));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(
             @PathVariable Long id) {

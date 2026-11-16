@@ -23,8 +23,7 @@ import static com.pragma.users.domain.constant.RoleValidationMessages.ROLE_ID_RE
 import static com.pragma.users.domain.constant.RoleValidationMessages.ROLE_NOT_FOUND;
 import static com.pragma.users.domain.constant.UserValidationMessages.EMAIL_ALREADY_EXISTS;
 import static com.pragma.users.domain.constant.UserValidationMessages.USER_NOT_EMPLOYEE;
-import static com.pragma.users.domain.model.enums.RoleEnum.EMPLOYEE_ROLE;
-import static com.pragma.users.domain.model.enums.RoleEnum.OWNER_ROLE;
+import static com.pragma.users.domain.model.enums.RoleEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +55,11 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
         return registerUser(user, role);
     }
 
+    @Override
+    public User createClient(User user) {
+        Role role = findRoleByName(CLIENT_ROLE.getRoleName());
+        return registerUser(user, role);
+    }
 
     @Override
     public boolean existsByEmail(String email) {

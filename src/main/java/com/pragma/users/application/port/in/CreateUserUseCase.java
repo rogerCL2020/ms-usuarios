@@ -10,5 +10,8 @@ public interface CreateUserUseCase {
 
     User createEmployee(User user);
 
+    User createClient(User user);
+
+
 }
  

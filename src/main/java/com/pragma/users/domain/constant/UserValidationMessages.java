@@ -14,6 +14,7 @@ public final class UserValidationMessages {
     public static final String EMAIL_ALREADY_EXISTS  = "Email already exists";
     public static final String CREDENTIALS_INVALID = "Invalid credentials";
     public static final String EMAIL_NOT_EXISTS  = "Email does not exist";
+    public static final String USER_NOT_EMPLOYEE = "User is not an employee";
 
 
 }

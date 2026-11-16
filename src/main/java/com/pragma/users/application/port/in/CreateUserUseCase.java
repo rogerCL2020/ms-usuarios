@@ -7,5 +7,8 @@ public interface CreateUserUseCase {
     User createUser(User user);
 
     User createOwner(User user);
- }
+
+    User createEmployee(User user);
+
+}
  

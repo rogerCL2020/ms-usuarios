@@ -45,6 +45,11 @@ public class UserJpaAdapter implements UserRepositoryPort {
                 .map(this::toDomainWithRole);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        userJpaRepository.deleteById(id);
+    }
+
 
     private User toDomainWithRole(UserEntity entity) {
 

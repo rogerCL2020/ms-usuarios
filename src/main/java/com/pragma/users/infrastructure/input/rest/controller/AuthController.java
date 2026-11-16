@@ -4,7 +4,7 @@ package com.pragma.users.infrastructure.input.rest.controller;
 import com.pragma.users.application.dto.request.LoginRequestDto;
 import com.pragma.users.application.dto.response.LoginResponseDto;
 import com.pragma.users.application.port.in.AuthenticateUserUseCase;
-import com.pragma.users.infrastructure.output.security.adapter.JwtAuthenticationFilter;
+import com.pragma.users.infrastructure.output.security.JwtAuthenticationFilter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

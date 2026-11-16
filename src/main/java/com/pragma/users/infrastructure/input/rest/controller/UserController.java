@@ -4,6 +4,7 @@ package com.pragma.users.infrastructure.input.rest.controller;
 import com.pragma.users.application.dto.request.CreateUserRequest;
 import com.pragma.users.application.dto.response.UserResponse;
 import com.pragma.users.application.port.in.CreateUserUseCase;
+import com.pragma.users.application.port.in.DeleteUserUseCase;
 import com.pragma.users.application.port.in.GetUserUseCase;
 import com.pragma.users.domain.model.User;
 import jakarta.validation.Valid;
@@ -20,6 +21,8 @@ public class UserController {
 
     private final CreateUserUseCase createUserUseCase;
     private final GetUserUseCase getUserUseCase;
+    private final DeleteUserUseCase deleteEmployeeUseCase;
+
 
     @PostMapping("/owner")
     @PreAuthorize("hasRole('ADMIN')")
@@ -28,6 +31,20 @@ public class UserController {
         User user = toUser(request);
 
         User createdUser = createUserUseCase.createOwner(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(toResponse(createdUser));
+    }
+
+    @PostMapping("/employee")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
+    public ResponseEntity<UserResponse> createEmployee(
+            @Valid @RequestBody CreateUserRequest request) {
+
+        User user = toUser(request);
+
+        User createdUser = createUserUseCase.createEmployee(user);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -48,6 +65,13 @@ public class UserController {
             @RequestParam("correo") String email) {
 
         return ResponseEntity.ok(getUserUseCase.existsByEmail(email));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PROPIETARIO')")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+        deleteEmployeeUseCase.deleteEmployee(id);
+        return ResponseEntity.noContent().build();
     }
 
     private User toUser(CreateUserRequest request) {
